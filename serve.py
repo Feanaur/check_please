@@ -1,8 +1,9 @@
 import hug
+import trio
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-from reciept_recog import process_files, fns_check
+from reciept_recog import fns_process_files, fns_check
 
 
 @hug.get('/to_google')
@@ -21,7 +22,7 @@ def launch(code: str):
     gauth.flow.redirect_uri = "http://localhost:8000/launch/"
     gauth.Auth(code)
     drive = GoogleDrive(gauth)
-    process_files(drive)
+    trio.run(fns_process_files, drive)
     return "success"
 
 
