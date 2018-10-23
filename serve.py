@@ -2,7 +2,7 @@ import hug
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-from reciept_recog import process_files
+from reciept_recog import process_files, fns_check
 
 
 @hug.get('/to_google')
@@ -23,3 +23,8 @@ def launch(code: str):
     drive = GoogleDrive(gauth)
     process_files(drive)
     return "success"
+
+
+@hug.get('/get_data_from_fns')
+def get_data_from_fns(qr_code: str):
+    return fns_check(qr_code)
